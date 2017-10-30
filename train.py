@@ -6,7 +6,7 @@ from tensorflow.python.platform import gfile
 from tqdm import *
 
 from utilities.experiments import Constant, AutoEncoder, Data
-import autoencoder
+import autoencoder_fp
 
 from dataloader import DataLoader
 
@@ -15,14 +15,15 @@ from dataloader import DataLoader
 # TODO : declare additional properties
 # not fixed (change or add property as you like)
 
-ExperimentConditions = AutoEncoder.Experiment1
+ExperimentVariables = AutoEncoder.Experiment1
 Constant = Constant.Project1
-Data = Data.ChormaStftHop4096
+DataConstant = Data.ChormaStftHop4096
 is_train_mode = True
+PRINT_EVERY = 10
 
-X, y, mean_loss_op, optimizer_op, accuracy_op = autoencoder.build_graph(
-    ExperimentConditions
-    , Data
+X, y, after_encode_output, after_decode_output, mean_loss, optimizer, accuracy = autoencoder_fp.build_graph(
+   ExperimentVariables
+   , DataConstant
 )
 
 # Train and evaluate
@@ -31,32 +32,28 @@ with tf.Session() as sess:
     saver = tf.train.Saver()
     PRINT_EVERY = 10
 
-
     if is_train_mode:
         train_dataloader = DataLoader(file_path='dataset/track_metadata.csv'
-                                      , batch_size=ExperimentConditions.BATCH_SIZE
+                                      , batch_size=ExperimentVariables.Conditions.BATCH_SIZE
                                       , label_column_name=Constant.LABEL_COLUMN_NAME
-                                      , use_extracted_feature=Data.FEATURE_NAME
+                                      , use_extracted_feature=DataConstant.FEATURE_NAME
                                       , is_training=True
                                       )
 
-        for epoch in tnrange(ExperimentConditions.EPOCH_NUM):
+        for epoch in tnrange(ExperimentVariables.Conditions.EPOCH_NUM):
             total_batch = train_dataloader.num_batch
             epoch_loss, epoch_accuracy = [0, 0]
             batch_losses, batch_accuracies = [[], []]
 
             for i in range(total_batch):
                 batch_xs, batch_ys = train_dataloader.next_batch()
+                feed_dict = {X: batch_xs, y: batch_ys}
                 # TODO:  do some train step code here
-                # print(convolution_layer1.eval(feed_dict).shape)
-                # print(convolution_layer2.eval(feed_dict).shape)
-                # print(convolution_layer3.eval(feed_dict).shape)
-                # print(flat.eval(feed_dict).shape)
-                # print(fc_layer.eval(feed_dict).shape)
-                # print(output_layer.eval(feed_dict).shape)
+                print(after_encode_output.eval(feed_dict).shape)
+                print(after_decode_output.eval(feed_dict).shape)
                 batch_loss, _, batch_accuracy = sess.run(
-                    [mean_loss_op, optimizer_op, accuracy_op]
-                    , feed_dict={X: batch_xs, y: batch_ys}
+                    [mean_loss, optimizer, accuracy]
+                    , feed_dict=feed_dict
                 )
 
                 epoch_loss += batch_loss / total_batch
@@ -90,7 +87,7 @@ with tf.Session() as sess:
 
         # Validation
         validation_dataloader = DataLoader(file_path='dataset/track_metadata.csv'
-                                           , batch_size=ExperimentConditions.BATCH_SIZE
+                                           , batch_size=ExperimentVariables.Conditions.BATCH_SIZE
                                            , label_column_name=Constant.LABEL_COLUMN_NAME
                                            , use_extracted_feature=Data.FEATURE_NAME
                                            , is_training=False)
@@ -101,13 +98,7 @@ with tf.Session() as sess:
         for i in range(total_batch):
             batch_xs, batch_ys = validation_dataloader.next_batch()
             feed_dict = {X: batch_xs, y: batch_ys}
-            # print(convolution_layer1.eval(feed_dict).shape)
-            # print(convolution_layer2.eval(feed_dict).shape)
-            # print(convolution_layer3.eval(feed_dict).shape)
-            # print(flat.eval(feed_dict).shape)
-            # print(fc_layer.eval(feed_dict).shape)
-            # print(output_layer.eval(feed_dict).shape)
-            datum_accuracy = accuracy_op.eval(feed_dict=feed_dict)
+            datum_accuracy = accuracy.eval(feed_dict=feed_dict)
 
             validation_accuracy += datum_accuracy / total_batch
             validation_accuracies.append(datum_accuracy)

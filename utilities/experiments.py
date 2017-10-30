@@ -29,42 +29,46 @@ class AutoEncoder:
         class Conditions:
             BATCH_SIZE = 32
             EPOCH_NUM = 100
+            LEARNING_RATE = 0.00001
+
+            Regularizer = tf.contrib.layers.l2_regularizer(LEARNING_RATE)
+            Activation = tf.nn.relu
+            Initializer = tf.contrib.layers.xavier_initializer(LEARNING_RATE)
 
             def __init__(self):
                 pass
 
-        N_CLASS = 8
-        STRIDES = 1
-        LEARNING_RATE = 0.00001
+        class Parameters:
+            N_CLASS = 8
+            STRIDES = 1
 
-        ENCODING_LAYER_1_FILTER_WIDTH = 5
-        ENCODING_LAYER_1_FILTER_HEIGHT = 5
-        ENCODING_LAYER_1_FILTER_NUMBERS = 32
+            ENCODING_LAYER_1_FILTER_WIDTH = 5
+            ENCODING_LAYER_1_FILTER_HEIGHT = 5
+            ENCODING_LAYER_1_FILTER_NUMBERS = 32
 
-        ENCODING_LAYER_2_FILTER_WIDTH = 5
-        ENCODING_LAYER_2_FILTER_HEIGHT = 5
-        ENCODING_LAYER_2_FILTER_NUMBERS = 64
+            ENCODING_LAYER_2_FILTER_WIDTH = 5
+            ENCODING_LAYER_2_FILTER_HEIGHT = 5
+            ENCODING_LAYER_2_FILTER_NUMBERS = 64
 
-        AFTER_ENCODING_OUTPUT_WIDTH = Data.ChormaStftHop4096.IMAGE_WIDTH + 8
-        AFTER_ENCODING_OUTPUT_HEIGHT = Data.ChormaStftHop4096.IMAGE_HEIGHT + 8
-        AFTER_ENCODING_OUTPUT_DEPTH = ENCODING_LAYER_2_FILTER_NUMBERS
+            AFTER_ENCODING_OUTPUT_WIDTH = Data.ChormaStftHop4096.IMAGE_WIDTH + 8
+            AFTER_ENCODING_OUTPUT_HEIGHT = Data.ChormaStftHop4096.IMAGE_HEIGHT + 8
+            AFTER_ENCODING_OUTPUT_DEPTH = ENCODING_LAYER_2_FILTER_NUMBERS
 
-        DECODING_LAYER_1_FILTER_WIDTH = 5
-        DECODING_LAYER_1_FILTER_HEIGHT = 5
-        DECODING_LAYER_1_FILTER_NUMBERS = 32
+            DECODING_LAYER_1_FILTER_WIDTH = 5
+            DECODING_LAYER_1_FILTER_HEIGHT = 5
+            DECODING_LAYER_1_FILTER_NUMBERS = 32
 
-        DECODING_LAYER_2_FILTER_WIDTH = 5
-        DECODING_LAYER_2_FILTER_HEIGHT = 5
-        DECODING_LAYER_2_FILTER_NUMBERS = 1
+            DECODING_LAYER_2_FILTER_WIDTH = 5
+            DECODING_LAYER_2_FILTER_HEIGHT = 5
+            DECODING_LAYER_2_FILTER_NUMBERS = 1
 
-        FULLY_CONNECTED_LAYER_UNITS = 128
+            FULLY_CONNECTED_LAYER_UNITS = 128
 
-        Regularizer = tf.contrib.layers.l2_regularizer(LEARNING_RATE)
-        Activation = tf.nn.relu
-        Initializer = tf.contrib.layers.xavier_initializer(LEARNING_RATE)
+
+            def __init__(self):
+                pass
 
         def __init__(self):
             pass
-
     def __init__(self):
         pass
