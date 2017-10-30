@@ -1,5 +1,6 @@
 # Custom
 *.pkl
+music/
 
 
 # Byte-compiled / optimized / DLL files
