@@ -5,7 +5,7 @@ import tensorflow as tf
 from tensorflow.python.platform import gfile
 from tqdm import *
 
-from utilities.experiments import Constant, AutoEncoder, Data
+from utilities.experiments_1 import Constant, AutoEncoder, Data
 import autoencoder_fp
 
 from dataloader import DataLoader
