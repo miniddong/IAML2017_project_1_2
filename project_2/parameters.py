@@ -41,7 +41,7 @@ class Parameters:
             LEARNING_RATE = 0.0005
             LABEL_COLUMN_NAME = 'listens'
             N_CLASS = 3
-            EPOCH_NUM = 10
+            EPOCH_NUM = 2
             WINDOW_NUM = 10
 
             Regularizer = tf.contrib.layers.l2_regularizer(LEARNING_RATE)
