@@ -1,19 +1,14 @@
-from dataloader import DataLoader
-import tensorflow as tf
+import train
+from constant import Constant
+from parameters import Parameters
 
-def set_X(IMAGE_HEIGHT, IMAGE_WIDTH, NUM_STEPS):
-    return tf.placeholder([None, IMAGE_HEIGHT, int(IMAGE_WIDTH/NUM_STEPS)])
+project_constant = Constant.Project2
+data_constant = Constant.Data.ChromaStftHop512
+experiment_parameters = Parameters.Attention.Experiment1
+is_training = True
 
-def set_y(N_CLASS):
-    return tf.placeholder([None, N_CLASS])
+def main():
+    if is_training:
+        train.train(project_constant, data_constant, experiment_parameters)
 
-def lstm(LSTM_SIZE):
-    return tf.contrib.rnn.BasicLSTMCell(LSTM_SIZE)
-
-def initialize_state(BATCH_SIZE, state_size):
-    return tf.zeros([BATCH_SIZE, state_size])
-
-def initialize_hidden_and_current_state(BATCH_SIZE, state_size):
-    return initialize_state(BATCH_SIZE, state_size)\
-        , initialize_state(BATCH_SIZE, state_size)
-
+main()
