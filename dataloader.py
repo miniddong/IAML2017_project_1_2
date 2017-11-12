@@ -37,7 +37,7 @@ class DataLoader():
 
 
         if self.use_extracted_feature:
-            with open('{}_{}.pkl'.format(self.use_extracted_feature, mode), 'rb') as f:
+            with open('../dataset/{}_{}.pkl'.format(self.use_extracted_feature, mode), 'rb') as f:
                 self.extracted_tid_feature_pairs = pickle.load(f)
             tids, batch_x = zip(*self.extracted_tid_feature_pairs)
             self.metadata_df = self.metadata_df[self.metadata_df['track_id'].isin(tids)]
